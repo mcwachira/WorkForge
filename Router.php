@@ -4,7 +4,16 @@ class Router
 {
     protected array $routes = [];
 
-    public function registerRoute ($method, $uri, $controller){
+
+    /**
+     * Add a new route
+     * @param $method
+     * @param $uri
+     * @param $controller
+     * @return void
+     */
+    public function registerRoute ($method, $uri, $controller): void
+    {
     $this->routes[] =[
         'method' =>$method,
         'uri' => $uri,
@@ -19,7 +28,8 @@ class Router
      * @return void
      */
 
-    public function get($uri, $controller){
+    public function get($uri, $controller): void
+    {
 
       $this->registerRoute('GET', $uri, $controller);
     }
@@ -31,7 +41,8 @@ class Router
      * @return void
      */
 
-    public function post($uri, $controller){
+    public function post($uri, $controller): void
+    {
         $this->registerRoute('POST', $uri, $controller);
     }
 
@@ -42,7 +53,8 @@ class Router
      * @return void
      */
 
-    public function put($uri, $controller){
+    public function put($uri, $controller): void
+    {
       $this->registerRoute('    PUT', $uri, $controller);
     }
 
@@ -53,7 +65,8 @@ class Router
      * @return void
      */
 
-    public function delete($uri, $controller){
+    public function delete($uri, $controller): void
+    {
   $this->registerRoute('DELETE', $uri, $controller);
     }
 
@@ -80,7 +93,8 @@ class Router
      */
 
 
-    public function route($uri, $method){
+    public function route(string $uri, string $method): void
+    {
         foreach ($this->routes as $route){
             if($route['uri'] === $uri && $route['method'] === $method){
                 require basePath($route['controller']);
