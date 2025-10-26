@@ -1,0 +1,16 @@
+{
+  "name": "mcwachira/workforge",
+  "description": "Job listing application",
+  "authors": [
+    {
+      "name": "mcwachira",
+      "email": "dev@mcwachira.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Framework\\": "Framework/",
+      "App\\": "App/"
+    }
+  }
+}
