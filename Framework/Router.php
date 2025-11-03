@@ -13,12 +13,15 @@ class Router
      * @param $controller
      * @return void
      */
-    public function registerRoute ($method, $uri, $controller): void
+    public function registerRoute ($method, $uri, $action): void
     {
+
+        list($controller, $controllerMethod) = explode('@', $action);
     $this->routes[] =[
         'method' =>$method,
         'uri' => $uri,
-        'controller' => $controller
+        'controller' => $controller,
+        'controllerMethod' => $controllerMethod,
     ];
 }
 
@@ -26,6 +29,8 @@ class Router
      * Add a GET route
      * @parms string $uri
      * @params string $controller
+     * @param $uri
+     * @param $controller
      * @return void
      */
 
@@ -39,6 +44,8 @@ class Router
      * Add a POST route
      * @parms string $uri
      * @params string $controller
+     * @param $uri
+     * @param $controller
      * @return void
      */
 
@@ -51,6 +58,8 @@ class Router
      * Add a  PUT route
      * @parms string $uri
      * @params string $controller
+     * @param $uri
+     * @param $controller
      * @return void
      */
 
@@ -63,6 +72,8 @@ class Router
      * Add a  Delete route
      * @parms string $uri
      * @params string $controller
+     * @param $uri
+     * @param $controller
      * @return void
      */
 
@@ -98,7 +109,15 @@ class Router
     {
         foreach ($this->routes as $route){
             if($route['uri'] === $uri && $route['method'] === $method){
-                require basePath('App/' . $route['controller']);
+                //extract controller and controller method
+
+                $controller = 'App\\Controllers\\' . $route['controller'] ;
+                $controllerMethod = $route['controllerMethod'];
+
+                //Instantiate the controller and call the method
+
+                $controllerInstance = new $controller();
+                $controllerInstance->$controllerMethod();
                 return;
             }
         }
