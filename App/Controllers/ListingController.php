@@ -13,7 +13,7 @@ class ListingController {
     public function index() {
         $listings = $this ->db->query('SELECT * FROM listings')->fetchAll();
 
-        loadView('home', ['listings'=>$listings]);
+        loadView('listings/index', ['listings'=>$listings]);
     }
 
     public function create() {
