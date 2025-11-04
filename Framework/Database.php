@@ -4,7 +4,7 @@ namespace  Framework;
 
 use PDO;
 use PDOException;
-use PDOStatement;``
+use PDOStatement;
 
 class Database{
     public $conn;

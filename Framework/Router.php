@@ -10,13 +10,14 @@ class Router
      * Add a new route
      * @param $method
      * @param $uri
-     * @param $controller
+     * @param $action
      * @return void
      */
     public function registerRoute ($method, $uri, $action): void
     {
 
         list($controller, $controllerMethod) = explode('@', $action);
+
     $this->routes[] =[
         'method' =>$method,
         'uri' => $uri,
