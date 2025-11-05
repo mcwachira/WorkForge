@@ -52,7 +52,7 @@ class ListingController
      * @retrun void
      */
 
-    public function store()
+    public function store(): void
     {
 
         //only this fields will be submitted
@@ -64,6 +64,22 @@ class ListingController
 
         $newListingData = array_map('sanitize', $newListingData);
 
+        $requiredFields = ['title', 'description', 'email', 'city', 'state'];
+        $errors =[];
+
+        foreach ($requiredFields as $field) {
+            if (empty($newListingData[$field]) || !Validation::string($newListingData[$field])) {
+
+                $errors[$field] = ucfirst($field) .  " is required";
+            }
+        }
+
+        if(!empty($errors)){
+            //Reload Views with errors
+            loadView('listings/create', ['errors' => $errors]);
+        }else{
+            echo 'success';
+        }
         inspectAndDie($newListingData);
     }
 
