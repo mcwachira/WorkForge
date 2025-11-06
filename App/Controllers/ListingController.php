@@ -41,7 +41,7 @@ class ListingController
             ErrorController::notFound('Listing not found');
             return;
         }
-        loadView('listings/show', ['listing' => $listing]);
+        loadView('listings/show', ['listing' => $listings]);
     }
 
 
@@ -56,17 +56,23 @@ class ListingController
     {
 
         //only this fields will be submitted
-        $allowedFields = ['title', 'description', 'salary', 'tags', 'company', 'address', 'city', 'state', 'email', 'phone', 'requirements', 'benefits'];
+        $allowedFields = ['title', 'description', 'salary', 'tags', 'company', 'address', 'city', 'state', 'phone', 'email', 'requirements', 'benefits'];
 
         $newListingData = array_intersect_key($_POST, array_flip($allowedFields));
+//        inspectAndDie($_POST);
+//        inspectAndDie($newListingData);
 
-        $newListingData['user_data'] = 1;
+       $newListingData['user_data'] = 1;
 
+        //sanitizing the data
         $newListingData = array_map('sanitize', $newListingData);
 
-        $requiredFields = ['title', 'description', 'email', 'city', 'state'];
+
+        $requiredFields = ['title', 'description', 'salary', 'email', 'city', 'state'];
         $errors =[];
 
+
+        //checks if each field is empty
         foreach ($requiredFields as $field) {
             if (empty($newListingData[$field]) || !Validation::string($newListingData[$field])) {
 
@@ -76,11 +82,43 @@ class ListingController
 
         if(!empty($errors)){
             //Reload Views with errors
-            loadView('listings/create', ['errors' => $errors]);
+            loadView('listings/create', [
+                'errors' => $errors,
+            'listing' => $newListingData]);
         }else{
-            echo 'success';
+
+
+            //insert Data
+
+            $fields = [];
+            foreach ($newListingData as $field => $value) {
+                $fields[] = $field;
+            }
+
+
+            $fields = implode(', ', $fields);
+
+
+            $values = [];
+            foreach ($newListingData as $field => $value) {
+
+                if($value === ""){
+                    $newListingData[$field] = null;
+                }
+                $values[] = ':' . $field;
+            }
+
+            $values = implode(", ", $values);
+
+            $query = "INSERT INTO listings ({$fields}) VALUES ({$values})";
+            $this->db->query($query, $newListingData);
+
+
+            redirect("/listings");
+
+
         }
-        inspectAndDie($newListingData);
+
     }
 
 

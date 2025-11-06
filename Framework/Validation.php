@@ -20,6 +20,7 @@ class Validation
     public static function string(string $value, int $min = 1, float|int $max = INF): bool
     {
 
+
         if(is_string($value)) {
             //remove whitespaces
             $value = trim($value);
