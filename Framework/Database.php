@@ -51,7 +51,7 @@ class Database{
             foreach ($params as $param => $value){
 
                 //:id will become id
-                $stmt->bindParam(':' . $param, $value);
+                $stmt->bindValue(':' . $param, $value);
             }
 
             $stmt->execute();
