@@ -226,7 +226,7 @@ class ListingController
            //Submit to database
            $updateFields = [];
            foreach (array_keys($updateValues) as $field){
-               $updateFields[] = "{$field} :{$field}";
+               $updateFields[] = "{$field} = :{$field}";
            }
 
            $updateFields = implode(', ', $updateFields);
