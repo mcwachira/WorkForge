@@ -68,7 +68,7 @@ class Router
 
     public function put($uri, $controller): void
     {
-      $this->registerRoute('    PUT', $uri, $controller);
+      $this->registerRoute('PUT', $uri, $controller);
     }
 
     /**
