@@ -97,7 +97,7 @@ class UserController{
         }
 
         //check if the email exist
-            'email' => $email
+        $params = [   'email' => $email
         ];
         $user = $this->db->query('SELECT * FROM users WHERE email = :email' , $params)->fetch();
 

@@ -31,7 +31,7 @@ class Session {
 
 public static function set(string $key, $value): mixed
 {
-    $_SESSION[$key] = $value;
+    return $_SESSION[$key] = $value;
 }
 
 
