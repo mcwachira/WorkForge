@@ -93,9 +93,35 @@ class UserController{
                 ]
             ]);
             exit;
-        }else{
-            inspectAndDie('Store');
         }
+
+        //check if the email exist
+        $params  = [
+            'email' => $email
+        ];
+        $user = $this->db->query('SELECT * FROM users WHERE email = :email' , $params)->fetch();
+
+        if($user){
+            $errors['email'] = 'That Email already exists';
+            loadView('users/create', [
+                'errors' => $errors
+            ]);
+            exit;
+        }
+
+
+        //create user account
+
+        $params = [
+            'name' => $name,
+            'email' => $email,
+            'city' => $city,
+            'state' => $state,
+            'password' =>password_hash($password, PASSWORD_DEFAULT)
+        ];
+
+        $this->db->query('INSERT INTO users (name, email,city, state, password) VALUES(:name, :email,:city, :state,:password)', $params);
+            redirect('/');
 
     }
 
