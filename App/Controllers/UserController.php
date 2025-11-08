@@ -138,4 +138,17 @@ class UserController{
 
     }
 
+    /**
+     * Logout a user and kill a sesion
+     *
+     * @return void
+     *
+     */
+
+    public function logout(): void
+    {
+        Session::clearAll();
+        setCookie("PHPSESSID", "", time() - 86400, $params['path'], $params['domain'], $params['secure'] );
+        redirect('/');
+    }
     }
