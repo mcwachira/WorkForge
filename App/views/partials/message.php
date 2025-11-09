@@ -1,15 +1,14 @@
-<?php if(isset($_SESSION['success_message'])):?>
-    <div class="message bg-green-100 p-3 my-3">
-        <?= $_SESSION['success_message']?>
-    </div>
+<?php
 
-    <?php unset($_SESSION['success_message']);?>
-<?php endif;?>
+use Framework\Session;
+?>
 
-<?php if(isset($_SESSION['error_message'])):?>
-    <div class="message bg-red-100 p-3 my-3">
-        <?= $_SESSION['error_message']?>
-    </div>
+<?php $successMessage = Session::getFlashMessage('success_message'); ?>
+<?php if ($successMessage): ?>
+    <div class="message bg-green-100 p-3 my-3"><?= $successMessage ?></div>
+<?php endif; ?>
 
-    <?php unset($_SESSION['error_message']);?>
-<?php endif;?>
+<?php $errorMessage = Session::getFlashMessage('error_message'); ?>
+<?php if ($errorMessage): ?>
+    <div class="message bg-red-100 p-3 my-3"><?= $errorMessage ?></div>
+<?php endif; ?>
