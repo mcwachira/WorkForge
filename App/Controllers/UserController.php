@@ -209,11 +209,11 @@ if(!$user){
         }
 
         Session::set('user', [
-            'id' => $user->id,
-            'name' => $user->name,
-            'email' => $user->email,
-            'city' => $user->city,
-            'state' => $user->state
+            'id' => $user['id'],
+            'name' => $user['name'],
+            'email' => $user['email'],
+            'city' => $user['city'],
+            'state' => $user['state']
         ]);
 
 

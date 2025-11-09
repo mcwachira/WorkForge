@@ -4,6 +4,9 @@ namespace App\Controllers;
 
 use Framework\Database;
 use Framework\Validation;
+use Framework\Session;
+use Framework\Authorization;
+
 class ListingController
 {
     protected $db;
@@ -23,7 +26,7 @@ class ListingController
      */
     public function index()
     {
-        $listings = $this->db->query('SELECT * FROM listings')->fetchAll();
+        $listings = $this->db->query('SELECT * FROM listings ORDER BY created_at DESC ')->fetchAll();
 
         loadView('listings/index', ['listings' => $listings]);
     }
@@ -75,10 +78,10 @@ class ListingController
         $allowedFields = ['title', 'description', 'salary', 'tags', 'company', 'address', 'city', 'state', 'phone', 'email', 'requirements', 'benefits'];
 
         $newListingData = array_intersect_key($_POST, array_flip($allowedFields));
+        $newListingData['user_id'] = Session::get('user')['id'];
 //        inspectAndDie($_POST);
 //        inspectAndDie($newListingData);
 
-       $newListingData['user_data'] = 1;
 
         //sanitizing the data
         $newListingData = array_map('sanitize', $newListingData);
@@ -102,6 +105,7 @@ class ListingController
                 'errors' => $errors,
             'listing' => $newListingData]);
         }else{
+
 
 
             //insert Data
@@ -256,11 +260,19 @@ class ListingController
         $params = [
             'id' => $id
         ];
-        $listings = $this->db->query('SELECT * FROM listings WHERE id = :id', $params)->fetch();
+        $listing = $this->db->query('SELECT * FROM listings WHERE id = :id', $params)->fetch();
 
-        if(!$listings){
+        //check if listing exists
+        if(!$listing){
             ErrorController::notFound('Listing not Found');
             return;
+        }
+
+        //inspectAndDie($listing['user_id']);
+        //Authorization
+        if(!Authorization::isOwner($listing['user_id'])){
+            $_SESSION['error_message'] = 'You are not authorized to delete this listing';
+            return redirect('/listings/' . $listing->id );
         }
 
         $this->db->query('DELETE FROM listings WHERE id = :id', $params);
